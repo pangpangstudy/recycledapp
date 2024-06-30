@@ -1,0 +1,84 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// 包含制造商的信息 
+model Manufacturer {
+  id        String   @unique
+  timestamp DateTime
+
+  name     String
+  location String
+  contact  String
+  /// Manufacturer  product 一对多
+  products Product[]
+}
+
+// 产品的信息
+model Product {
+  id        String   @unique
+  timestamp DateTime
+
+  name           String
+  // Manufacturer  product 一对多
+  //所以Product需要 多对一 关联关系 反向查找
+  // 关联字段Product manufacturerId --- >  Manufacturer id
+  manufacturer   Manufacturer  @relation(fields: [manufacturerId], references: [id])
+  manufacturerId String
+  /// Product ProductItem 一对多
+  productItems   ProductItem[]
+  /// 有毒物质 一对多
+  toxicItems     ToxicItem[]
+}
+
+//描述产品中的有毒物质
+model ToxicItem {
+  id        Int      @id @default(autoincrement())
+  timestamp DateTime
+
+  name   String
+  weight Int
+
+  Product   Product @relation(fields: [productId], references: [id])
+  productId String
+}
+
+//包含产品项的信息
+model ProductItem {
+  id        String   @unique
+  ///时间
+  timestamp DateTime
+
+  product   Product @relation(fields: [productId], references: [id])
+  productId String
+
+  status       ProductStatus
+  transactions Transaction[]
+}
+
+model Transaction {
+  id        Int      @id @default(autoincrement())
+  timestamp DateTime
+
+  productItemId String
+  productItem   ProductItem   @relation(fields: [productItemId], references: [id])
+  status        ProductStatus
+}
+
+enum ProductStatus {
+  MANUFACTURED
+  SOLD
+  RETURNED
+  RECYCLED
+}

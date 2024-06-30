@@ -1,0 +1,124 @@
+ContractEventPayload {
+  filter: [Function: ManufacturerRegistered] {
+    name: 'ManufacturerRegistered',
+    _contract: Contract {
+      target: '0x6AFA185536e7223Ebc3D2Bec069EF7F7E7dF2A77',
+      interface: [Interface],
+      runner: WebSocketProvider {},
+      filters: {},
+      fallback: null,
+      [Symbol(_ethersInternal_contract)]: {}
+    },
+    _key: 'ManufacturerRegistered',
+    getFragment: [Function: getFragment],
+    fragment: [Getter]
+  },
+  emitter: Contract {
+    target: '0x6AFA185536e7223Ebc3D2Bec069EF7F7E7dF2A77',
+    interface: Interface {
+      fragments: [Array],
+      deploy: [ConstructorFragment],
+      fallback: null,
+      receive: false
+    },
+    runner: WebSocketProvider {},
+    filters: {},
+    fallback: null,
+    [Symbol(_ethersInternal_contract)]: {}
+  },
+  log: EventLog {
+    provider: WebSocketProvider {},
+    transactionHash: '0x401092ce8133152c7a42f3b85e7585ea4d2f798c37683f52a182417f976816d2',
+    blockHash: '0x47fc4e2d4d536ccf0ab2fb93c52e62074f5d033e71f64630b46e221100542d97',
+    blockNumber: 8895902,
+    removed: false,
+    address: '0x6AFA185536e7223Ebc3D2Bec069EF7F7E7dF2A77',
+    data: '0x00000000000000000000000079b323b903b7ffe9b2bad0e8732b57cb816cf6f5000000000000000000000000000000000000000000000000000000000000008000000000000000000000000000000000000000000000000000000000000000c000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000000009746573746e616d6532000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000076265696a696e670000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000053132343536000000000000000000000000000000000000000000000000000000',
+    topics: [
+      '0x57b346b79fe14f8142d096bf73f762b9d4ef542e0011250f22e5499155b54dac'
+    ],
+    index: 0,
+    transactionIndex: 0,
+    interface: Interface {
+      fragments: [Array],
+      deploy: [ConstructorFragment],
+      fallback: null,
+      receive: false
+    },
+    fragment: EventFragment {
+      type: 'event',
+      inputs: [Array],
+      name: 'ManufacturerRegistered',
+      anonymous: false
+    },
+    args: Result(4) [
+      '0x79b323B903b7FFE9B2BAd0e8732B57cB816Cf6F5',
+      'testname2',
+      'beijing',
+      '12456'
+    ]
+  },
+  args: Result(4) [
+    '0x79b323B903b7FFE9B2BAd0e8732B57cB816Cf6F5',
+    'testname2',
+    'beijing',
+    '12456'
+  ],
+  fragment: EventFragment {
+    type: 'event',
+    inputs: [ [ParamType], [ParamType], [ParamType], [ParamType] ],
+    name: 'ManufacturerRegistered',
+    anonymous: false
+  }
+}
+
+
+
+
+EventLog {
+  provider: WebSocketProvider {},
+  transactionHash: '0x401092ce8133152c7a42f3b85e7585ea4d2f798c37683f52a182417f976816d2',
+  blockHash: '0x47fc4e2d4d536ccf0ab2fb93c52e62074f5d033e71f64630b46e221100542d97', 
+  blockNumber: 8895902,
+  removed: false,
+  address: '0x6AFA185536e7223Ebc3D2Bec069EF7F7E7dF2A77',
+  data: '0x00000000000000000000000079b323b903b7ffe9b2bad0e8732b57cb816cf6f5000000000000000000000000000000000000000000000000000000000000008000000000000000000000000000000000000000000000000000000000000000c000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000000009746573746e616d6532000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000076265696a696e670000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000053132343536000000000000000000000000000000000000000000000000000000',
+  topics: [
+    '0x57b346b79fe14f8142d096bf73f762b9d4ef542e0011250f22e5499155b54dac'
+  ],
+  index: 0,
+  transactionIndex: 0,
+  interface: Interface {
+    fragments: [
+      [ConstructorFragment], [EventFragment],
+      [EventFragment],       [EventFragment],
+      [EventFragment],       [EventFragment],
+      [FunctionFragment],    [FunctionFragment],
+      [FunctionFragment],    [FunctionFragment],
+      [FunctionFragment],    [FunctionFragment],
+      [FunctionFragment],    [FunctionFragment],
+      [FunctionFragment],    [FunctionFragment],
+      [FunctionFragment],    [FunctionFragment]
+    ],
+    deploy: ConstructorFragment {
+      type: 'constructor',
+      inputs: [],
+      payable: false,
+      gas: null
+    },
+    fallback: null,
+    receive: false
+  },
+  fragment: EventFragment {
+    type: 'event',
+    inputs: [ [ParamType], [ParamType], [ParamType], [ParamType] ],
+    name: 'ManufacturerRegistered',
+    anonymous: false
+  },
+  args: Result(4) [
+    '0x79b323B903b7FFE9B2BAd0e8732B57cB816Cf6F5',
+    'testname2',
+    'beijing',
+    '12456'
+  ]
+}
