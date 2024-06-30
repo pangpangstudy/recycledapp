@@ -1,4 +1,9 @@
-import { Injectable, OnModuleDestroy, OnModuleInit } from '@nestjs/common'
+import {
+  Injectable,
+  Logger,
+  OnModuleDestroy,
+  OnModuleInit,
+} from '@nestjs/common'
 import { ethers } from 'ethers'
 import { RecycleChain, RecycleChain__factory } from '../common/typechain-types'
 import { contractAddress } from 'src/common/utils'
@@ -7,11 +12,9 @@ import { PrismaService } from 'src/common/prisma/prisma.service'
 export class ListenerService implements OnModuleInit, OnModuleDestroy {
   private provider: ethers.WebSocketProvider
   private contract: RecycleChain
+
   constructor(private readonly prisma: PrismaService) {}
   onModuleInit() {
-    // 初始化wss连接 provider
-    // 连接合约
-    //   监听合约
     this.initializeWebSocketProvider()
     this.subscribeToEvents()
   }
@@ -45,7 +48,7 @@ export class ListenerService implements OnModuleInit, OnModuleDestroy {
       this.contract.on(
         this.contract.filters.ManufacturerRegistered,
         async (manufacture, name, location, contact, event) => {
-          // @ts-ignore
+          // @ts-expect-error  这里是ethers的ts类型处理问题
           const blockNumber = event.log.blockNumber
           const timestamp = await this.getBlockTime(blockNumber)
           await this.prisma.manufacturer.create({
