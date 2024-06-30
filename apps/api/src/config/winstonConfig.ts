@@ -1,13 +1,11 @@
-import {
-  WinstonModuleOptions,
-  utilities as nestWinstonModuleUtilities,
-} from 'nest-winston'
+import { utilities as nestWinstonModuleUtilities } from 'nest-winston'
 import * as winston from 'winston'
 import * as DailyRotateFile from 'winston-daily-rotate-file'
 const timeZone = 'Asia/Shanghai'
 const timestampFormat = () => {
   return new Date().toLocaleString('zh-CN', { timeZone: timeZone })
 }
+
 export const instance = winston.createLogger({
   transports: [
     // new winston.transports.Console({
@@ -24,6 +22,20 @@ export const instance = winston.createLogger({
       format: winston.format.combine(
         winston.format.timestamp(),
         nestWinstonModuleUtilities.format.nestLike(),
+      ),
+    }),
+    new winston.transports.DailyRotateFile({
+      level: 'warn',
+      filename: './logs/%DATE%_warn.log',
+      datePattern: 'YYYY-MM-DD',
+      zippedArchive: true,
+      maxSize: '20m',
+      maxFiles: '14d',
+      format: winston.format.combine(
+        winston.format.timestamp({ format: timestampFormat }),
+        winston.format.printf(
+          (info) => `${info.timestamp} ${info.level}: ${info.message}`,
+        ),
       ),
     }),
     new DailyRotateFile({

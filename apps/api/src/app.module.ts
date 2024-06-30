@@ -1,4 +1,4 @@
-import { Logger, Module } from '@nestjs/common'
+import { Global, Logger, Module } from '@nestjs/common'
 import { AppController } from './app.controller'
 import { AppService } from './app.service'
 import { PrismaModule } from './common/prisma/prisma.module'
@@ -12,6 +12,7 @@ export const isDEV = process.env.NODE_ENV === 'development'
 // } else {
 //   envFilePath.unshift('.env.prod')
 // }
+@Global()
 @Module({
   imports: [
     PrismaModule,

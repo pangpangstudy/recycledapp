@@ -10,7 +10,7 @@ async function bootstrap() {
       instance,
     }),
   })
-  app.setGlobalPrefix('api/v1')
+  // app.setGlobalPrefix('api/v1')
   await app.listen(3000)
 }
 bootstrap()
