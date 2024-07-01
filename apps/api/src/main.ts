@@ -14,6 +14,10 @@ async function bootstrap() {
   })
   const configService = app.get(ConfigService)
   const secret = configService.get<string>('SECRET')
+  app.enableCors({
+    origin: configService.get<string>('FRONTEND_URL'),
+    credentials: true,
+  })
   // app.setGlobalPrefix('api/v1')
   app.use(
     session({
@@ -24,7 +28,7 @@ async function bootstrap() {
       cookie: { secure: false, sameSite: true },
     }),
   )
-  app.enableCors()
+
   await app.listen(3000)
 }
 bootstrap()

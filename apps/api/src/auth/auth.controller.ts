@@ -5,53 +5,65 @@ import {
   HttpException,
   HttpStatus,
   Post,
-  Req,
-  Res,
+  Session,
 } from '@nestjs/common'
-import { AuthService } from './auth.service'
-import { Response } from 'express'
-import { SiweErrorType } from 'siwe'
-
+import { SiweMessage, generateNonce } from 'siwe'
+import { VerifyDto } from './dto/Verify.dto'
+import { SessionData } from 'express-session'
+declare module 'express-session' {
+  interface SessionData {
+    nonce: string
+    siwe: SiweMessage
+  }
+}
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor() {}
   @Get('nonce')
-  async getNonce(@Req() req) {
-    req.session.nonce = this.authService.getNonce()
-    console.log(req.session)
-    return req.session.nonce
+  getNonce(@Session() session: SessionData) {
+    const nonce = generateNonce()
+    session.nonce = nonce
+    return nonce
   }
   @Post('verify')
-  async verify(@Body() body, @Req() req: any, @Res() res: Response) {
-    if (!body.message) {
-      throw new HttpException('message不存在', HttpStatus.BAD_REQUEST)
-    }
+  async verify(@Body() body: VerifyDto, @Session() session: SessionData) {
     try {
-      const message = await this.authService.verify(body, req.session.nonce)
-      req.session.siwe = message
-      req.session.cookie.expires = new Date(message.expirationTime)
-      req.session.save(() => res.status(HttpStatus.OK).send(true))
-    } catch (e) {
-      req.session.siwe = null
-      req.session.nonce = null
-      switch (e) {
-        case SiweErrorType.EXPIRED_MESSAGE: {
-          req.session.save(() => res.status(440).json({ message: e.message }))
-          break
-        }
-        case SiweErrorType.INVALID_SIGNATURE: {
-          req.session.save(() => res.status(422).json({ message: e.message }))
-          break
-        }
-        default: {
-          req.session.save(() => res.status(500).json({ message: e.message }))
-          break
-        }
+      const sessionNonce = session.nonce
+      if (!sessionNonce) {
+        throw new HttpException('服务端session错误,session中没有nonce值', 500)
       }
+      const { message, signature } = body
+
+      const SIWEObject = new SiweMessage(message)
+
+      const { data } = await SIWEObject.verify({
+        signature,
+        nonce: sessionNonce,
+      })
+      session.siwe = data
+      session.cookie.maxAge = 2 * 6 * 60 * 60 * 1000
+      return { message: 'Verification successful' }
+    } catch (error) {
+      session.siwe = null
+      session.nonce = null
+      console.error(error)
+      throw new HttpException(error, HttpStatus.UNAUTHORIZED)
     }
   }
-  @Get('me')
-  async me(@Req() req: any, @Res() res: Response) {
-    return `You are authenticated and your address is: ${req.session.siwe.address}`
+  @Get('logout')
+  logout(@Session() session) {
+    session.destroy((err) => {
+      if (err) {
+        return { message: 'F ailed to destroy session', error: err }
+      } else {
+        return { message: 'Logged out successfully' }
+      }
+    })
+  }
+
+  @Get('authStatus')
+  isAuth(@Session() session) {
+    console.log(session)
+    return { address: session.siwe?.address ? session.siwe.address : '' }
   }
 }

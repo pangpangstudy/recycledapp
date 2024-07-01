@@ -76,6 +76,11 @@ model Transaction {
   status        ProductStatus
 }
 
+model User {
+  id    String @unique
+  nonce String @unique
+}
+
 enum ProductStatus {
   MANUFACTURED
   SOLD
