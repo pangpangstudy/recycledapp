@@ -3,6 +3,8 @@ import { AppModule } from './app.module'
 
 import { WinstonModule } from 'nest-winston'
 import { instance } from './config/winstonConfig'
+import * as session from 'express-session'
+import { ConfigService } from '@nestjs/config'
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
@@ -10,7 +12,19 @@ async function bootstrap() {
       instance,
     }),
   })
+  const configService = app.get(ConfigService)
+  const secret = configService.get<string>('SECRET')
   // app.setGlobalPrefix('api/v1')
+  app.use(
+    session({
+      name: 'siwe',
+      secret: secret,
+      resave: true,
+      saveUninitialized: true,
+      cookie: { secure: false, sameSite: true },
+    }),
+  )
+  app.enableCors()
   await app.listen(3000)
 }
 bootstrap()
