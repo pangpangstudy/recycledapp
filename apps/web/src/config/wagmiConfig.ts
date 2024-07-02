@@ -20,6 +20,7 @@ const connectors = !isClient
       [
         {
           groupName: 'Recommended',
+
           wallets: [
             rainbowWallet,
             metaMaskWallet,

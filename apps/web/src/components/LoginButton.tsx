@@ -5,7 +5,7 @@ import React from 'react'
 
 const LoginButton = () => {
   useAuth()
-  return <ConnectButton />
+  return <ConnectButton chainStatus="full" />
 }
 
 export default LoginButton
