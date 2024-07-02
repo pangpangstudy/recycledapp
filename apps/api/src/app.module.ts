@@ -13,6 +13,7 @@ import { ProductsModule } from './models/products/products.module'
 import { ToxicItemsModule } from './models/toxic-items/toxic-items.module'
 import { TransactionsModule } from './models/transactions/transactions.module'
 import { AuthModule } from './auth/auth.module'
+import { ResyncModule } from './resync/resync.module'
 
 export const isDEV = process.env.NODE_ENV === 'development'
 // const envFilePath = ['.env']
@@ -39,6 +40,7 @@ export const isDEV = process.env.NODE_ENV === 'development'
           : `.env.${process.env.NODE_ENV}`,
       ],
     }),
+    ResyncModule,
     ListenerModule,
     ManufacturersModule,
     ProductItemsModule,

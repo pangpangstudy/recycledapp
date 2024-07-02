@@ -5,6 +5,8 @@ import { WinstonModule } from 'nest-winston'
 import { instance } from './config/winstonConfig'
 import * as session from 'express-session'
 import { ConfigService } from '@nestjs/config'
+import { ValidationPipe } from '@nestjs/common'
+import { AuthGuard } from './auth/auth.guard'
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
@@ -14,6 +16,8 @@ async function bootstrap() {
   })
   const configService = app.get(ConfigService)
   const secret = configService.get<string>('SECRET')
+  app.useGlobalPipes(new ValidationPipe())
+
   app.enableCors({
     origin: configService.get<string>('FRONTEND_URL'),
     credentials: true,

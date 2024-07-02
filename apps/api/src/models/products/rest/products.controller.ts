@@ -1,11 +1,12 @@
-import { Controller, Get, Param, Query } from '@nestjs/common'
+import { Controller, Get, Param, Query, UseGuards } from '@nestjs/common'
 
 import { PrismaService } from 'src/common/prisma/prisma.service'
 import { ApiTags } from '@nestjs/swagger'
 import { ProductQueryDto } from './dtos/query.dto'
 import { ApiOkResponse } from '@nestjs/swagger'
 import { ProductEntity } from './entity/product.entity'
-
+import { AuthGuard } from 'src/auth/auth.guard'
+// @UseGuards(AuthGuard)
 @ApiTags('products')
 @Controller('products')
 export class ProductsController {

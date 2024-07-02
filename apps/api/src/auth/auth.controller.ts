@@ -42,7 +42,7 @@ export class AuthController {
       })
       session.siwe = data
       session.cookie.maxAge = 2 * 6 * 60 * 60 * 1000
-      return { message: 'Verification successful' }
+      return { message: 'Verification successful', code: 1 }
     } catch (error) {
       session.siwe = null
       session.nonce = null
@@ -61,9 +61,17 @@ export class AuthController {
     })
   }
 
-  @Get('authStatus')
-  isAuth(@Session() session) {
+  @Post('authStatus')
+  isAuth(@Session() session, @Body() body) {
     console.log(session)
-    return { address: session.siwe?.address ? session.siwe.address : '' }
+    console.log(body)
+    const siwe = session.siwe
+    if (!siwe?.address) {
+      return { address: '' }
+    }
+    if (siwe.address !== body.address) {
+      return { address: '' }
+    }
+    return { address: session.siwe?.address }
   }
 }
